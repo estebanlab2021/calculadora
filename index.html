@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+    <title>Calculadora</title>
+</head>
+
+<body>
+    <header class="container-fluid">
+        <div class="row justify-content-center align-content-center bg-primary py-3">
+            <div class="col-md-6 col-sm-3">
+                <h1 id="tituloPpal" class="text-center text-light display-4 fw-bold">Calculadora JavaScript</h1>
+            </div>
+        </div>
+    </header>
+    <div class="container">
+        <div class="row justify-content-center align-content-center">
+            <div class="col-lg-6 col-md-6 col-sm-6 py-3 bg-warning">
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <div id="output" style="height: 70px;" class="w-100 border border-dark display-5 bg-light"></div>
+                        </tr>
+                        <tr>
+                            <td><button id="c" type="button" class="btn btn-danger w-100 text-light fw-bold fs-3">c</button></td>
+                            <td><button id="potencia" type="button" class="btn btn-light w-100 fw-bold fs-3">^</button></td>
+                            <td><button id="raiz" type="button" class="btn btn-light w-100 fw-bold fs-3">&radic;</button></td>
+                            <td><button id="divi" type="button" class="btn btn-dark w-100 text-light fw-bold fs-3">÷</button></td>
+                            <!--alt + 246-->
+                        </tr>
+                        <tr>
+                            <td><button id="num7" type="button" class="btn btn-light w-100 fw-bold fs-3">7</button></td>
+                            <td><button id="num8" type="button" class="btn btn-light w-100 fw-bold fs-3">8</button></td>
+                            <td><button id="num9" type="button" class="btn btn-light w-100 fw-bold fs-3">9</button></td>
+                            <td><button id="mul" type="button" class="btn btn-dark w-100 text-light fw-bold fs-3">x</button></td>
+                        </tr>
+                        <tr>
+                            <td><button id="num4" type="button" class="btn btn-light w-100 fw-bold fs-3">4</button></td>
+                            <td><button id="num5" type="button" class="btn btn-light w-100 fw-bold fs-3">5</button></td>
+                            <td><button id="num6" type="button" class="btn btn-light w-100 fw-bold fs-3">6</button></td>
+                            <td><button id="res" type="button" class="btn btn-dark w-100 text-light fw-bold fs-3">-</button></td>
+                        </tr>
+                        <tr>
+                            <td><button id="num1" type="button" class="btn btn-light w-100 fw-bold fs-3">1</button></td>
+                            <td><button id="num2" type="button" class="btn btn-light w-100 fw-bold fs-3">2</button></td>
+                            <td><button id="num3" type="button" class="btn btn-light w-100 fw-bold fs-3">3</button></td>
+                            <td><button id="sum" type="button" class="btn btn-dark w-100 text-light fw-bold fs-3">+</button></td>
+                        </tr>
+                        <tr>
+                            <td><button id="masmenos" type="button" class="btn btn-secondary w-100 fw-bold fs-3">+/-</button></td>
+                            <td><button id="num0" type="button" class="btn btn-light w-100 fw-bold fs-3">0</button></td>
+                            <td><button id="coma" type="button" class="btn btn-secondary w-100 fw-bold fs-3">,</button></td>
+                            <td><button id="igual" type="button" class="btn btn-dark w-100 text-light fw-bold fs-3">=</button></td>
+                        </tr>
+                    </tbody>
+
+                </table>
+
+            </div>
+        </div>
+    </div>
+
+    <footer class="container-fluid bg-dark py-3">
+        <div class="row justify-content-center align-content-center">
+            <div class="col-md-6 col-sm-3">
+                <h5 class="text-center text-light">footer</h5>
+            </div>
+        </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+        //----------Carga de variables------------------------
+        let operacion;
+        let operandoA;
+        let operandoB;
+        var numeros = [];
+
+        const resultado = document.getElementById('output');
+
+        for (let i = 0; i <= 9; i++) {
+            numeros.push(document.getElementById(`num${i}`));
+        };
+
+        var mas = document.getElementById('sum'),
+            res = document.getElementById('res'),
+            multi = document.getElementById("mul"),
+            divi = document.getElementById("divi"),
+            potencia = document.getElementById("potencia"),
+            raiz = document.getElementById("raiz");
+
+        var c = document.getElementById('c'),
+            coma = document.getElementById("coma"),
+            masmenos = document.getElementById("masmenos");
+
+        //----------Funciones------------------------
+
+        for (let i = 0; i < numeros.length; i++) {
+            numeros[i].onclick = function() {
+                //resultado.textContent = resultado.textContent + `${i}`;
+                resultado.textContent += `${i}`;
+            };
+
+        };
+
+        masmenos.onclick = function() {
+            resultado.textContent = resultado.textContent * -1;
+        };
+
+        coma.onclick = function() {
+            resultado.textContent += ".";
+            if (!isNaN(resultado.textContent)) {
+                console.log('Es un número');
+                resultado.textContent;
+            } else {
+                resultado.textContent = "error";
+            };
+        };
+
+        c.onclick = function() {
+            resultado.textContent = "";
+            operandoA = 0;
+            operandoB = 0;
+            operacion = "";
+        };
+
+        mas.onclick = function() {
+            operandoA = resultado.textContent;
+            operacion = "+";
+            limpiar();
+        };
+
+        res.onclick = function() {
+            operandoA = resultado.textContent;
+            operacion = "-";
+            limpiar();
+        };
+
+        multi.onclick = function() {
+            operandoA = resultado.textContent;
+            operacion = "*";
+            limpiar();
+        };
+
+        divi.onclick = function() {
+            operandoA = resultado.textContent;
+            operacion = "/";
+            limpiar();
+        };
+
+        potencia.onclick = function() {
+            operandoA = resultado.textContent;
+            operacion = "p";
+            limpiar();
+        };
+
+        raiz.onclick = function() {
+            operandoA = resultado.textContent;
+            operacion = "r";
+            limpiar();
+        };
+
+        igual.onclick = function(e) {
+            operandoB = resultado.textContent;
+            resolver();
+        }
+
+        function limpiar() {
+            resultado.textContent = "";
+        }
+
+        function resolver() {
+            let res = 0;
+            switch (operacion) {
+                case "+":
+                    res = parseFloat(operandoA) + parseFloat(operandoB);
+                    break;
+                case "-":
+                    res = parseFloat(operandoA) - parseFloat(operandoB);
+                    break;
+                case "*":
+                    res = parseFloat(operandoA) * parseFloat(operandoB);
+                    break;
+                case "/":
+                    res = parseFloat(operandoA) / parseFloat(operandoB);
+                    break;
+                case "p":
+                    res = Math.pow(parseFloat(operandoA), parseFloat(operandoB));
+                    break;
+                case "r":
+                    res = Math.sqrt(parseFloat(operandoA));
+                    break;
+            }
+            resultado.textContent = res;
+        };
+    </script>
+</body>
+
+</html>
