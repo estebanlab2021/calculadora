@@ -12,8 +12,8 @@
 <body>
     <header class="container-fluid">
         <div class="row justify-content-center align-content-center bg-primary py-3">
-            <div class="col-md-6 col-sm-3">
-                <h1 id="tituloPpal" class="text-center text-light display-4 fw-bold">Calculadora JavaScript</h1>
+            <div class="col-md-7 col-sm-3">
+                <h1 id="tituloPpal" class="text-center text-light display-4 fw-bold">Calculadora con JavaScript</h1>
             </div>
         </div>
     </header>
@@ -23,7 +23,10 @@
                 <table class="table">
                     <tbody>
                         <tr>
-                            <div id="output" style="height: 70px;" class="w-100 border border-dark display-5 bg-light"></div>
+                            <div id="contenido" style="height: 40px;" class="w-100 bg-light text-end"></div>
+                        </tr>
+                        <tr>
+                            <div id="output" style="height: 60px;" class="w-100 display-5 bg-light text-end"></div>
                         </tr>
                         <tr>
                             <td><button id="c" type="button" class="btn btn-danger w-100 text-light fw-bold fs-3">c</button></td>
@@ -78,9 +81,11 @@
         let operandoA;
         let operandoB;
         var numeros = [];
+        let output;
 
         const resultado = document.getElementById('output');
-
+        const contenido = document.getElementById('contenido');
+        resultado.textContent = "0";
         for (let i = 0; i <= 9; i++) {
             numeros.push(document.getElementById(`num${i}`));
         };
@@ -100,28 +105,42 @@
 
         for (let i = 0; i < numeros.length; i++) {
             numeros[i].onclick = function() {
+                inicializar();
                 //resultado.textContent = resultado.textContent + `${i}`;
                 resultado.textContent += `${i}`;
+                contenido.textContent += `${i}`;
             };
+        };
 
+        function inicializar() {
+            if (resultado.textContent === "0") {
+                resultado.textContent = "";
+            }
         };
 
         masmenos.onclick = function() {
             resultado.textContent = resultado.textContent * -1;
+            //contenido.textContent = resultado.textContent;
+            contenido.textContent = "-" + contenido.textContent;
+            //buscar(resultado.textContent);
         };
 
         coma.onclick = function() {
             resultado.textContent += ".";
+            contenido.textContent += ".";
             if (!isNaN(resultado.textContent)) {
                 console.log('Es un número');
                 resultado.textContent;
+                contenido.textContent;
             } else {
                 resultado.textContent = "error";
+                contenido.textContent = "error";
             };
         };
 
         c.onclick = function() {
-            resultado.textContent = "";
+            resultado.textContent = "0";
+            contenido.textContent = "";
             operandoA = 0;
             operandoB = 0;
             operacion = "";
@@ -130,40 +149,50 @@
         mas.onclick = function() {
             operandoA = resultado.textContent;
             operacion = "+";
+            contenido.textContent += operacion;
             limpiar();
+            calcularSuma();
         };
 
         res.onclick = function() {
             operandoA = resultado.textContent;
             operacion = "-";
+            contenido.textContent += operacion;
             limpiar();
+            calcularResta();
         };
 
         multi.onclick = function() {
             operandoA = resultado.textContent;
             operacion = "*";
+            contenido.textContent += operacion;
             limpiar();
+            calcularMulti();
         };
 
         divi.onclick = function() {
             operandoA = resultado.textContent;
             operacion = "/";
+            contenido.textContent += operacion;
             limpiar();
+            calcularDivi();
         };
 
         potencia.onclick = function() {
             operandoA = resultado.textContent;
             operacion = "p";
+            contenido.textContent += "^";
             limpiar();
         };
 
         raiz.onclick = function() {
             operandoA = resultado.textContent;
             operacion = "r";
+            contenido.textContent = "√" + operandoA;
             limpiar();
         };
 
-        igual.onclick = function(e) {
+        igual.onclick = function() {
             operandoB = resultado.textContent;
             resolver();
         }
@@ -188,14 +217,104 @@
                     res = parseFloat(operandoA) / parseFloat(operandoB);
                     break;
                 case "p":
-                    res = Math.pow(parseFloat(operandoA), parseFloat(operandoB));
+                    res = Math.abs(Math.pow(parseFloat(operandoA), parseFloat(operandoB)));
                     break;
                 case "r":
-                    res = Math.sqrt(parseFloat(operandoA));
+                    //res = Math.sqrt(parseFloat(operandoA));
+                    if (isNaN(Math.sqrt(parseFloat(operandoA)))) {
+                        res = "<small>Error. No se puede calcular</small>";
+                    } else {
+                        res = Math.sqrt(parseFloat(operandoA));
+                    }
                     break;
             }
-            resultado.textContent = res;
+            resultado.textContent = "0";
+            //contenido.textContent = "";
+            operandoA = 0;
+            operandoB = 0;
+            operacion = "";
+            resultado.innerHTML = res;
+            //contenido.innerHTML += ' = ' + res;
+            output = res;
+
         };
+
+        function calcularSuma() {
+            let texto = contenido.textContent.match(/[+]/gi);
+            if (texto.length === 2) {
+                let texto2 = contenido.textContent.slice(0, -1);
+                console.log(texto2);
+                contenido.textContent = texto2;
+                var string = texto2.split("+", 2);
+                console.log(string);
+                resultado.textContent = parseFloat(string[0]) + parseFloat(string[1]);
+                output = resultado.textContent;
+                //contenido.textContent += ' = ' + output.slice(0, -1);
+                operacion = "";
+            } else {
+                contenido.textContent;
+                resultado.textContent;
+            };
+        };
+
+        function calcularResta() {
+            let texto = contenido.textContent.match(/[-]/gi);
+            if (texto.length >= 2) {
+                let texto2 = contenido.textContent.slice(0, -1);
+                console.log(texto2);
+                contenido.textContent = texto2;
+                var string = texto2.split("-");
+                console.log(string);
+                resultado.textContent = parseFloat(string[0]) - parseFloat(string[1]);
+                output = resultado.textContent;
+                //contenido.textContent += ' = ' + output;
+                operacion = "";
+            } else {
+                contenido.textContent;
+                resultado.textContent;
+            };
+        };
+
+        function calcularMulti() {
+            let texto = contenido.textContent.match(/[*]/gi);
+            if (texto.length >= 2) {
+                let texto2 = contenido.textContent.slice(0, -1);
+                console.log(texto2);
+                contenido.textContent = texto2;
+                var string = texto2.split("*");
+                console.log(string);
+                resultado.textContent = parseFloat(string[0]) * parseFloat(string[1]);
+                output = resultado.textContent;
+                //contenido.textContent += ' = ' + output;
+                operacion = "";
+            } else {
+                contenido.textContent;
+                resultado.textContent;
+            };
+
+        };
+
+        function calcularDivi() {
+            let texto = contenido.textContent.match(/[/]/gi);
+            if (texto.length >= 2) {
+                let texto2 = contenido.textContent.slice(0, -1);
+                console.log(texto2);
+                contenido.textContent = texto2;
+                var string = texto2.split("/");
+                console.log(string);
+                resultado.textContent = parseFloat(string[0]) / parseFloat(string[1]);
+                output = resultado.textContent;
+                //contenido.textContent += ' = ' + output;
+                operacion = "";
+            } else {
+                contenido.textContent;
+                resultado.textContent;
+            };
+
+        };
+        //var miCadena = "555+222";
+        //var divisiones = miCadena.split("+");
+        //console.log(divisiones);
     </script>
 </body>
 
